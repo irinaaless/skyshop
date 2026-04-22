@@ -1,7 +1,6 @@
 package basket;
 
 import product.Product;
-
 import java.util.Arrays;
 
 public class ProductBasket {
