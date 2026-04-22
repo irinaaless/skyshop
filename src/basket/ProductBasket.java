@@ -2,6 +2,8 @@ package basket;
 
 import product.Product;
 
+import java.util.Arrays;
+
 public class ProductBasket {
     private final Product[] products;
     private int size;
@@ -48,9 +50,7 @@ public class ProductBasket {
         return false;
     }
     public void clear(){
-        for (int i = 0; i < products.length; i++) {
-            products[i] = null;
-        }
+        Arrays.fill(products, null);
         size = 0;
         System.out.println("Корзина очищена");
     }

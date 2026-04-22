@@ -17,6 +17,10 @@ public class App {
        basket.printBasket();
        basket.clear();
        basket.printBasket();
+       basket.total();
+       search = basket.searchName("помидор");
+        System.out.println(search);
+        basket.printBasket();
 
     }
 }
