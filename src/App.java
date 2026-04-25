@@ -23,6 +23,7 @@ public class App {
         System.out.println("=====Проверка=====");
         System.out.println("Поиск 'молоко': " + productBasket.searchName("молоко"));
         productBasket.clear();
+
         productBasket.printBasket();
         System.out.println("Итого: " + productBasket.total());
         System.out.println("====Пополнение корзины====");
