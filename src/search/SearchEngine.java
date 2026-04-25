@@ -1,41 +1,60 @@
 package search;
 
-import article.Article;
+import exception.BestResultNotFound;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class SearchEngine {
-    private Searchable[] searchables;
+    private final List<Searchable> searchables;
 
-    public SearchEngine(int search){
-        searchables = new Searchable[search];
+    public SearchEngine(){
+        searchables = new LinkedList<>();
     }
 
-    public Searchable[] search(String search){
-        Searchable[] result = new Searchable[5];
-        int count = 0;
-        for (int i = 0; i < searchables.length; i++) {
-            if (searchables[i] != null){
-                String term = searchables[i].searchTerm();
-                if (term.contains(search)){
-                    result[count] = searchables[i];
-                    count++;
-
-                    if (count == 5){
-                        break;
-                    }
-                }
+    public List<Searchable> search(String term) {
+        List<Searchable> result = new LinkedList<>();
+        for(Searchable searchable : searchables){
+            if (searchable !=null && searchable.searchTerm().contains(term)){
+                result.add(searchable);
             }
         }
         return result;
     }
 
     public void add(Searchable searchable){
-        for (int i = 0; i < searchables.length; i++) {
-            if (searchables[i] == null){
-                searchables[i] = searchable;
-                return;
+        searchables.add(searchable);
+    }
+
+    public Searchable bestFoundMatch(String search) throws BestResultNotFound {
+        Searchable searchable = null;
+        int maxCount = 0;
+        for (Searchable s : searchables) {
+            if (s != null) { // Добавлена проверка на null
+                int count = 0;
+                int index = 0;
+                String searchTerm = s.searchTerm();
+                if (s != null) {
+                    int indexString = s.searchTerm().indexOf(search, index);
+
+                    while (indexString != -1) {
+                        count++;
+                        index = indexString + search.length();
+                        indexString = s.searchTerm().indexOf(search, index);
+                    }
+                }
+                if (count > maxCount) {
+                    maxCount = count;
+                    searchable = s;
+                }
             }
         }
-        System.out.println("Поисковый движок переполнен!");
+        if (maxCount == 0) {
+            throw new BestResultNotFound
+                    ("Не найдено подходящих результатов для запроса: " + search);
+        }
+        return searchable;
     }
+
 
 }

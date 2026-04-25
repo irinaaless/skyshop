@@ -2,31 +2,43 @@ package basket;
 
 import product.Product;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProductBasket {
-    private final Product[] products;
+   private final List<Product> products;
     private int size;
 
-    public ProductBasket(int product){
-        products = new Product[product];
+    public ProductBasket(){
+        this.products = new LinkedList<>();
         size = 0;
     }
-    public void add(Product product){
-        for (int i = 0; i < products.length; i++) {
-
-           if (products[i] == null){
-              products[i] = product;
-              size++;
-               return;
-           }
+    public void add(Product product) {
+        if (product != null) {
+            size++;
+            products.add(product);
+        } else {
+            System.out.println("Нельзя добавить null продукт");
         }
-        System.out.println("Корзина заполнена! Добавить продукт невозможно!");
-
     }
+    public List<Product> deleteNameProduct(String name){
+        List<Product> deleteProduct = new LinkedList<>();
+        Iterator iterator = products.iterator();
+        while (iterator.hasNext()){
+            Product product = (Product) iterator.next();
+            if (product.getName().equalsIgnoreCase(name)){
+                deleteProduct.add(product);
+                iterator.remove();
+            }
+        }
+        return deleteProduct;
+    }
+
     public int total(){
         int sum = 0;
         for (int i = 0; i < size; i++) {
-                sum += products[i].getPrice();
+                sum += products.get(i).getPrice();
         }
         return sum;
     }
@@ -37,8 +49,8 @@ public class ProductBasket {
         }
         int count = 0;
         for (int i = 0; i < size; i++) {
-            System.out.println(products[i].toString());
-            if (products[i].isSpecial()){
+            System.out.println(products.get(i).toString());
+            if (products.get(i).isSpecial()){
                 count++;
             }
         }
@@ -47,15 +59,30 @@ public class ProductBasket {
     }
     public boolean searchName(String name){
         for (int i = 0; i < size; i++) {
-            if (products[i].getName().equals(name)){
+            if (products.get(i).getName().equals(name)){
                 return true;
             }
         }
         return false;
     }
+
+    public boolean hasProduct(String name) {
+        for (Product product : products) {
+            if (product.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void clear(){
-        Arrays.fill(products, null);
-        size = 0;
-        System.out.println("Корзина очищена");
+        for (int i = 0; i < products.size(); i++) {
+            products.set(i, null);
+        }
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i) == null) {
+                size = 0;
+            }
+        }
     }
 }
