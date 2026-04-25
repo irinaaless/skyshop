@@ -1,10 +1,12 @@
 package product;
 
 
-public abstract class Product {
+import search.Searchable;
+
+public abstract class Product implements Searchable {
     private String name;
 
-    public Product(String name) {
+    public Product (String name){
         this.name = name;
     }
 
@@ -15,5 +17,15 @@ public abstract class Product {
     public abstract int getPrice();
     public boolean isSpecial(){
         return false;
+    }
+
+    @Override
+    public String searchTerm() {
+        return name;
+    }
+
+    @Override
+    public String searchContent() {
+        return "PRODUCT";
     }
 }

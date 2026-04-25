@@ -1,40 +1,52 @@
-import basket.ProductBasket;
 
+import article.Article;
+import basket.ProductBasket;
 import product.DiscountedProduct;
 import product.FixPriceProduct;
 import product.SimpleProduct;
+import search.SearchEngine;
+import search.Searchable;
+
+import java.util.Arrays;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args){
+        SimpleProduct tomato = new SimpleProduct("помидор", 89);
+        DiscountedProduct cheeses = new DiscountedProduct("сыр", 423, 5);
+        FixPriceProduct milk = new FixPriceProduct("молоко");
 
-        SimpleProduct cheese = new SimpleProduct("сыр", 200);
-        SimpleProduct tea = new SimpleProduct("чай", 70);
-        SimpleProduct coffee  = new SimpleProduct("кофе", 300);
-        ProductBasket basket = new ProductBasket(6);
-        basket.add(cheese);
-        basket.add(tea);
-       basket.printBasket();
-        basket.add(coffee);
-        System.out.println("Поиск 'сыр' " + basket.searchName("сыр"));
-       basket.printBasket();
-       basket.clear();
-        System.out.println("\n--- Корзина после очистки и наполнения ---");
-        basket.printBasket();
-        System.out.println("Общая стоимость: " + basket.total() + " руб.");
-        System.out.println("Поиск 'помидор' " + basket.searchName("помидор"));
-        System.out.println("Пополнение корзины:");
-        DiscountedProduct tomato = new DiscountedProduct("помидор", 140, 5);
-        DiscountedProduct butter = new DiscountedProduct("масло", 400, 3);
-        FixPriceProduct bread = new FixPriceProduct("хлеб");
-        basket.add(tomato);
-        basket.add(butter);
-        basket.add(tea);
-        basket.add(cheese);
-        basket.add(coffee);
-        basket.add(bread);
-        basket.printBasket();
-        System.out.println("Поиск 'масло': " + basket.searchName("масло"));
-        System.out.println("Поиск 'хлеб': " + basket.searchName("хлеб"));
+        ProductBasket productBasket = new ProductBasket(5);
+        productBasket.add(tomato);
+        productBasket.add(cheeses);
+        productBasket.add(milk);
+        productBasket.printBasket();
+        System.out.println("=====Проверка=====");
+        System.out.println("Поиск 'молоко': " + productBasket.searchName("молоко"));
+        productBasket.clear();
+        productBasket.printBasket();
+        System.out.println("Итого: " + productBasket.total());
+        System.out.println("====Пополнение корзины====");
+        productBasket.add(cheeses);
+        productBasket.add(tomato);
+        productBasket.add(milk);
+        productBasket.printBasket();
+        Article one = new Article("Топ 10 стран для миграции", "Италия, Сербия, Таиланд, Испания, Канада");
+        SearchEngine searchEngine = new SearchEngine(5);
+        searchEngine.add(one);
+        searchEngine.add(cheeses);
+        searchEngine.add(tomato);
+        Searchable[] result = searchEngine.search("помидор");
+        System.out.println("=== Результаты поиска 'помидор' ===");
+        for (Searchable item : result) {
+            if (item != null) {
+                System.out.println(item.getStringRepresentation());
+            }
+        }
+        Searchable[] two = searchEngine.search("молоко");
+        Searchable[] three = searchEngine.search("сыр");
+        System.out.println(Arrays.toString(result));
+        System.out.println(Arrays.toString(two));
+        System.out.println(Arrays.toString(three));
 
     }
 }
